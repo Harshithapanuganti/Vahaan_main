@@ -2,8 +2,8 @@ name: Vahan Pipeline
 
 on:
   schedule:
-    - cron: "30 21 */15 * *"   # ✅ runs every 15 days (3 AM IST)
-  workflow_dispatch:           # ✅ manual run option
+    - cron: "30 21 */15 * *"   # ✅ Runs every 15 days (3:00 AM IST)
+  workflow_dispatch:           # ✅ Manual run option
 
 jobs:
   run:
@@ -25,22 +25,23 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # ✅ Step 4: Create output folder (safe)
-      - name: Create output folder
+      # ✅ Step 4: Run FULL pipeline (IMPORTANT ✅)
+      # This should generate CSV files in vahan_data/
+      - name: Run pipeline (scraper + processing)
         run: |
-          mkdir -p output
+          python run_pipeline.py
 
-      # ✅ Step 5: Run your script directly
-      - name: Run merge script
+      # ✅ Step 5: Run merge step (FINAL OUTPUT ✅)
+      - name: Run merge
         run: |
           python merge_data.py
 
-      # ✅ Step 6: Verify files (debug, useful)
-      - name: Check generated files
+      # ✅ Step 6: Debug (optional but helpful ✅)
+      - name: Check files
         run: |
           ls -R
 
-      # ✅ Step 7: Upload CSV output
+      # ✅ Step 7: Upload final CSV
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:

@@ -1,4 +1,3 @@
-
 import pandas as pd
 import os
 
@@ -8,13 +7,11 @@ BASE_DIR = "vahan_data"
 def extract_metadata(path):
     parts = path.split(os.sep)
 
-    # example path:
-    # vahan_data/State/RTO/Yaxis_Xaxis/year.csv
     try:
         state = parts[1]
         rto = parts[2]
         axis = parts[3]
-        year = parts[4].replace(".csv", "")
+        year = parts[4].replace(".xlsx", "")   # ✅ changed
     except IndexError:
         state, rto, axis, year = "unknown", "unknown", "unknown", "unknown"
 
@@ -26,11 +23,12 @@ def merge_files():
 
     for root, dirs, files in os.walk(BASE_DIR):
         for file in files:
-            if file.endswith(".csv"):
+            if file.endswith(".xlsx"):   # ✅ changed
+
                 file_path = os.path.join(root, file)
 
                 try:
-                    df = pd.read_csv(file_path)
+                    df = pd.read_excel(file_path)   # ✅ changed
 
                     state, rto, axis, year = extract_metadata(file_path)
 
@@ -44,12 +42,10 @@ def merge_files():
                 except Exception as e:
                     print(f"Skipping {file_path}: {e}")
 
-    # ✅ ADD THIS FIX
     if not all_data:
-        print("❌ No CSV files found in vahan_data folder. Skipping merge.")
+        print("❌ No data found to merge.")
         return
 
-    # ✅ Safe now
     final_df = pd.concat(all_data, ignore_index=True)
 
     final_df.to_csv("final_merged_data.csv", index=False)
@@ -59,3 +55,4 @@ def merge_files():
 
 if __name__ == "__main__":
     merge_files()
+``

@@ -9,4 +9,3 @@ uvicorn
 starlette
 pyyaml
 requests
-os

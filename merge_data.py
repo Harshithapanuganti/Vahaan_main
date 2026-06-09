@@ -44,9 +44,17 @@ def merge_files():
                 except Exception as e:
                     print(f"Skipping {file_path}: {e}")
 
+    # ✅ ADD THIS FIX
+    if not all_data:
+        print("❌ No CSV files found in vahan_data folder. Skipping merge.")
+        return
+
+    # ✅ Safe now
     final_df = pd.concat(all_data, ignore_index=True)
 
     final_df.to_csv("final_merged_data.csv", index=False)
+
+    print("✅ Saved: final_merged_data.csv")
 
     print("✅ Saved: final_merged_data.csv")
 

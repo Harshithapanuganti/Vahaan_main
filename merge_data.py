@@ -56,8 +56,6 @@ def merge_files():
 
     print("✅ Saved: final_merged_data.csv")
 
-    print("✅ Saved: final_merged_data.csv")
-
 
 if __name__ == "__main__":
     merge_files()

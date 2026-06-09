@@ -2,7 +2,7 @@ name: Vahan Pipeline
 
 on:
   schedule:
-    - cron: "30 21 */15 * *"
+    - cron: "30 21 */15 * *"   # ✅ every 15 days
   workflow_dispatch:
 
 jobs:
@@ -10,41 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # ✅ Step 2: Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
+      # ✅ Step 3: Install packages
+      - name: Install requirements
         run: |
           pip install -r requirements.txt
 
-      # ✅ ADD THIS (MANDATORY)
+      # ✅ Step 4: Install Playwright (IMPORTANT ✅)
       - name: Install Playwright browsers
         run: |
           playwright install --with-deps
 
-      # ✅ Run scraper
+      # ✅ Step 5: Run scraper pipeline
       - name: Run pipeline
         run: |
           python run_pipeline.py
 
-      # ✅ Merge output
+      # ✅ Step 6: Merge all files
       - name: Merge data
         run: |
           python merge_data.py
 
-      # ✅ Debug
+      # ✅ Step 7: Debug check
       - name: Check files
         run: |
           ls -R
 
-      # ✅ Upload
+      # ✅ Step 8: Upload final CSV
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
           name: vahan-output
           path: final_merged_data.csv
+``

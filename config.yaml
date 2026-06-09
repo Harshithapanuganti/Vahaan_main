@@ -1,0 +1,17 @@
+job:
+  script: scripts/api.py
+
+parameters:
+  # leave blank → auto fetch
+  yaxis: null
+  xaxis: null
+
+  state: null       # optional (set if needed)
+
+  start_year: 1900  # initial data
+  end_year: null    # auto → current year
+
+  all_rtos: true
+
+output:
+  directory: "vahan_data"

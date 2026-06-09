@@ -1,16 +1,16 @@
-name: Vahan Pipeline
+name: Vahan Pipeline   # ✅ This name will appear in Actions
 
 on:
+  workflow_dispatch:   # ✅ REQUIRED → shows "Run workflow" button
   schedule:
-    - cron: "30 21 */15 * *"   # ✅ every 15 days
-  workflow_dispatch:
+    - cron: "30 21 */15 * *"   # ✅ runs every 15 days
 
 jobs:
   run:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Step 1: Checkout code
+      # ✅ Step 1: Checkout repository
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -20,12 +20,12 @@ jobs:
         with:
           python-version: "3.10"
 
-      # ✅ Step 3: Install packages
+      # ✅ Step 3: Install dependencies
       - name: Install requirements
         run: |
           pip install -r requirements.txt
 
-      # ✅ Step 4: Install Playwright (IMPORTANT ✅)
+      # ✅ Step 4: Install Playwright (VERY IMPORTANT)
       - name: Install Playwright browsers
         run: |
           playwright install --with-deps
@@ -35,20 +35,19 @@ jobs:
         run: |
           python run_pipeline.py
 
-      # ✅ Step 6: Merge all files
+      # ✅ Step 6: Merge all Excel files
       - name: Merge data
         run: |
           python merge_data.py
 
-      # ✅ Step 7: Debug check
+      # ✅ Step 7: Debug (check files generated)
       - name: Check files
         run: |
           ls -R
 
-      # ✅ Step 8: Upload final CSV
+      # ✅ Step 8: Upload final output
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
           name: vahan-output
           path: final_merged_data.csv
-``
